@@ -837,7 +837,7 @@ function getVLESSConfig(userIDs, hostName) {
 }
 
 
-function createVLESSSub(userID_Path, hostName) {
+function createVLESSDub(userID_Path, hostName) {
 	let portArray_http = [80, 8080, 8880, 2052, 2086, 2095, 2082];
 	let portArray_https = [443, 8443, 2053, 2096, 2087, 2083];
 
