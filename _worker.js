@@ -740,7 +740,6 @@ function getVLESSConfig(userIDs, hostName) {
 		const vlessSec = `vless://${userID}@${proxyIP}${commonUrlPart}`;
 		output.push(`UUID: ${userID}`);
 		output.push(`${hashSeparator}\nv2ray default ip\n${separator}\n${vlessMain}\n${separator}`);
-		output.push(`${hashSeparator}\nv2ray with best ip\n${separator}\n${vlessSec}\n${separator}`);
 	});
 	output.push(`${hashSeparator}\n# OpenClash\n
 - name: ${hostName}
