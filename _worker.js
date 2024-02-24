@@ -742,4 +742,130 @@ openclash
 ---------------------------------------------------------------
 ################################################################
 `;
-					}
+}
+
+	// HTML Head with CSS
+	const htmlHead = `
+    <head>
+        <title>EDtunnel: VLESS configuration</title>
+        <meta name="description" content="This is a tool for generating VLESS protocol configurations. Give us a star on GitHub https://github.com/3Kmfi6HP/EDtunnel if you found it useful!">
+		<meta name="keywords" content="EDtunnel, cloudflare pages, cloudflare worker, severless">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta property="og:site_name" content="EDtunnel: VLESS configuration" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="EDtunnel - VLESS configuration and subscribe output" />
+        <meta property="og:description" content="Use cloudflare pages and worker severless to implement vless protocol" />
+        <meta property="og:url" content="https://${hostName}/" />
+        <meta property="og:image" content="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=${encodeURIComponent(`vless://${userIDs.split(',')[0]}@${hostName}${commonUrlPart}`)}" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="EDtunnel - VLESS configuration and subscribe output" />
+        <meta name="twitter:description" content="Use cloudflare pages and worker severless to implement vless protocol" />
+        <meta name="twitter:url" content="https://${hostName}/" />
+        <meta name="twitter:image" content="https://cloudflare-ipfs.com/ipfs/bafybeigd6i5aavwpr6wvnwuyayklq3omonggta4x2q7kpmgafj357nkcky" />
+        <meta property="og:image:width" content="1500" />
+        <meta property="og:image:height" content="1500" />
+
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            padding: 10px;
+        }
+
+        a {
+            color: #1a0dab;
+            text-decoration: none;
+        }
+		img {
+			max-width: 100%;
+			height: auto;
+		}
+		
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+        }
+		/* Dark mode */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #333;
+                color: #f0f0f0;
+            }
+
+            a {
+                color: #9db4ff;
+            }
+
+            pre {
+                background-color: #282a36;
+                border-color: #6272a4;
+            }
+        }
+        </style>
+    </head>
+    `;
+
+	// Join output with newlines, wrap inside <html> and <body>
+	return `
+    <html>
+    ${htmlHead}
+    <body>
+    <pre style="
+    background-color: transparent;
+    border: none;
+">${header.join('')}</pre><pre>${output.join('\n')}</pre>
+    </body>
+</html>`;
+}
+
+
+function createVLESSSub(userID_Path, hostName) {
+	let portArray_http = [80, 8080, 8880, 2052, 2086, 2095, 2082];
+	let portArray_https = [443, 8443, 2053, 2096, 2087, 2083];
+
+	// Split the userIDs into an array
+	let userIDArray = userID_Path.includes(',') ? userID_Path.split(',') : [userID_Path];
+
+	// Prepare output array
+	let output = [];
+
+	// Generate output string for each userID
+	userIDArray.forEach((userID) => {
+		// Check if the hostName is a Cloudflare Pages domain, if not, generate HTTP configurations
+		// reasons: pages.dev not support http only https
+		if (!hostName.includes('pages.dev')) {
+			// Iterate over all ports for http
+			portArray_http.forEach((port) => {
+				const commonUrlPart_http = `:${port}?encryption=none&security=none&fp=random&type=ws&host=${hostName}&path=%2F%3Fed%3D2048#${hostName}-HTTP-${port}`;
+				const vlessMainHttp = `vless://${userID}@${hostName}${commonUrlPart_http}`;
+
+				// For each proxy IP, generate a VLESS configuration and add to output
+				proxyIPs.forEach((proxyIP) => {
+					const vlessSecHttp = `vless://${userID}@${proxyIP}${commonUrlPart_http}-${proxyIP}-EDtunnel`;
+					output.push(`${vlessMainHttp}`);
+					output.push(`${vlessSecHttp}`);
+				});
+			});
+		}
+		// Iterate over all ports for https
+		portArray_https.forEach((port) => {
+			const commonUrlPart_https = `:${port}?encryption=none&security=tls&sni=${hostName}&fp=random&type=ws&host=${hostName}&path=%2F%3Fed%3D2048#${hostName}-HTTPS-${port}`;
+			const vlessMainHttps = `vless://${userID}@${hostName}${commonUrlPart_https}`;
+
+			// For each proxy IP, generate a VLESS configuration and add to output
+			proxyIPs.forEach((proxyIP) => {
+				const vlessSecHttps = `vless://${userID}@${proxyIP}${commonUrlPart_https}-${proxyIP}-EDtunnel`;
+				output.push(`${vlessMainHttps}`);
+				output.push(`${vlessSecHttps}`);
+			});
+		});
+	});
+
+	// Join output with newlines
+	return output.join('\n');
+								   }
