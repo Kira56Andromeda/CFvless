@@ -742,7 +742,8 @@ function getVLESSConfig(userIDs, hostName) {
 		output.push(`${hashSeparator}\nv2ray default ip\n${separator}\n${vlessMain}\n${separator}`);
 		output.push(`${hashSeparator}\nv2ray with best ip\n${separator}\n${vlessSec}\n${separator}`);
 	});
-	output.push(`${hashSeparator}\n# Clash Proxy Provider 配置格式(configuration format)\nproxy-groups:\n  - name: ${hostName}
+	output.push(`${hashSeparator}\n# OpenClash\n
+- name: ${hostName}
   server: ${hostName}
   type: vless
   port: 443
@@ -881,4 +882,4 @@ function createVLESSSub(userID_Path, hostName) {
 
 	// Join output with newlines
 	return output.join('\n');
-				}
+			}
