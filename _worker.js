@@ -715,7 +715,7 @@ async function handleUDPOutBound(webSocket, vlessResponseHeader, log) {
  * @returns {string}
  */
 function getVLESSConfig(userIDs, hostName) {
-	const commonUrlPart = `:443?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2FKecered#${hostName}`;
+	const commonUrlPart = `:443?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2FKecered#%F0%9F%92%A9+${hostName}`;
 	const separator = "---------------------------------------------------------------";
 	const hashSeparator = "################################################################";
 
