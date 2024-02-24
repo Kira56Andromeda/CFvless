@@ -742,7 +742,20 @@ function getVLESSConfig(userIDs, hostName) {
 		output.push(`${hashSeparator}\nv2ray default ip\n${separator}\n${vlessMain}\n${separator}`);
 		output.push(`${hashSeparator}\nv2ray with best ip\n${separator}\n${vlessSec}\n${separator}`);
 	});
-	output.push(`${hashSeparator}\n# Clash Proxy Provider 配置格式(configuration format)\nproxy-groups:\n  - name: UseProvider\n	type: select\n	use:\n	  - provider1\n	proxies:\n	  - Proxy\n	  - DIRECT\nproxy-providers:\n  provider1:\n	type: http\n	url: https://${hostName}/sub/${userIDArray[0]}?format=clash\n	interval: 3600\n	path: ./provider1.yaml\n	health-check:\n	  enable: true\n	  interval: 600\n	  # lazy: true\n	  url: http://www.gstatic.com/generate_204\n\n${hashSeparator}`);
+	output.push(`${hashSeparator}\n# Clash Proxy Provider 配置格式(configuration format)\nproxy-groups:\n  - name: ${hostName}
+  server: ${hostName}
+  type: vless
+  port: 443
+  uuid: ${userID}
+  tls: true
+  skip-cert-verify: true
+  servername: ${hostName}
+  network: ws
+  ws-opts:
+    path: /Kecered
+    headers:
+      host: ${hostName}
+  udp: true\n\n${hashSeparator}`);
 
 	// HTML Head with CSS
 	const htmlHead = `
@@ -868,4 +881,4 @@ function createVLESSSub(userID_Path, hostName) {
 
 	// Join output with newlines
 	return output.join('\n');
-}
+				}
