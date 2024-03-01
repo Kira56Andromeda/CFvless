@@ -729,7 +729,7 @@ OpenClash
 	const clash_link = `https://api.v1.mk/sub?target=clash&url=${encodeURIComponent(sublink)}&insert=false&emoji=true&list=false&tfo=false&scv=true&fdn=false&sort=false&new_name=true`;
 	// Prepare header string
 	const header = `
-<p align='center'><img src='http://lenshi.xtgem.com/icon/bergerak/naruto/Cidorikakashi.gif' alt='图片描述' style='margin-bottom: -50px;'></p>`;
+<p align='center'><img src='http:' alt='图片描述' style='margin-bottom: -50px;'></p>`;
 
 	// HTML Head with CSS and FontAwesome library
 	const htmlHead = `
