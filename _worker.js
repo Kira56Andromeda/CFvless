@@ -690,7 +690,7 @@ async function handleUDPOutBound(webSocket, vlessResponseHeader, log) {
  * @returns {string}
  */
 function getVLESSConfig(userIDs, hostName) {
-	const commonUrlPart = `:443?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2FKecered#%F0%9F%92%A9+${hostName}`;
+	const commonUrlPart = `:443?encryption=none&security=tls&sni=${hostName}&fp=randomized&type=ws&host=${hostName}&path=%2FMules#%F0%9F%92%A9+${hostName}`;
 	const hashSeparator = "################################################################";
 
 	// Split the userIDs into an array
@@ -712,13 +712,13 @@ OpenClash
   server: ${hostName}
   type: vless
   port: 443
-  uuid: ${userID}
+  uuid: bugmu.com
   tls: true
   skip-cert-verify: true
   servername: ${hostName}
   network: ws
   ws-opts:
-    path: /Kecered
+    path: /Mules
     headers:
       host: ${hostName}
   udp: true
